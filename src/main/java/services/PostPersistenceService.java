@@ -4,11 +4,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import converters.Converter;
 import entities.Post;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 public class PostPersistenceService {
+    private final static Logger logger = LoggerFactory.getLogger(PostPersistenceService.class);
     private static final String outputPostsDirectory= "C:\\outputAllPosts";
     private static final String jsonFormat = ".json";
 
@@ -22,21 +27,28 @@ public class PostPersistenceService {
 
     public void saveAllPostsToSingleFile() {
         createDirectory(outputPostsDirectory);
-        for (int i = 0; i <postConverter.getPostList().size() ; i++) {
-            String postId = postConverter.getPostList().get(i).getId().toString();
-            String outputDestination = outputPostsDirectory+ "\\"+ postId + jsonFormat;
+        List<Post> postList = postConverter.getPostList();
+        for (Post singlePost : postList) {
+            String postId = singlePost.getId().toString();
+            String outputDestination = outputPostsDirectory + "\\" + postId + jsonFormat;
             try {
                 fileWriter = new FileWriter(outputDestination);
-                gson.toJson(postConverter.getPostList().get(i),fileWriter);
+                gson.toJson(singlePost, fileWriter);
+                logger.info("persisting post " + singlePost.getId() + " to directory: " + outputDestination);
                 fileWriter.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("error while saving post" + e);
             }
-         }
+        }
 
     }
 
     private boolean createDirectory(String outputPostsDirectory){
-        return new File(outputPostsDirectory).mkdir();
+        File file = new File(outputPostsDirectory);
+        if (file.mkdir()){
+            logger.info(" new output directory is created: " + outputPostsDirectory);
+        }
+        logger.info("output directory: " + outputPostsDirectory);
+        return false;
     }
 }

@@ -1,7 +1,6 @@
 package converters;
 
 import entities.Post;
-import services.JsonObtainerService;
 
 import java.util.function.Supplier;
 

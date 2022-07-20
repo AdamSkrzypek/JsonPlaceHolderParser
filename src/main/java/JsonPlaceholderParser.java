@@ -15,6 +15,8 @@ public class JsonPlaceholderParser {
         Supplier<String> supplier = jsonObtainerService::getJsonFromURLAsString;
         Converter<Post> postConverter= new PostConverter(supplier);
         PostPersistenceService postPersistenceService = new PostPersistenceService(postConverter);
+
+
         JsonController postController = new PostController(jsonObtainerService,postPersistenceService);
         postController.fetchAllPosts();
         postConverter.convertToCorrectObject(supplier, Post.class);

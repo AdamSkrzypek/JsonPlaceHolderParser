@@ -6,22 +6,21 @@ import java.io.*;
 
 
 public class JsonObtainerService {
-    private final static Logger logger = LoggerFactory.getLogger(JsonObtainerService.class);
+    private final String url;
     private String rawJson;
-    private HTTPConnectorService httpConnector;
-    private InputStream inputStream;
-    public JsonObtainerService(){
+    private final static Logger logger = LoggerFactory.getLogger(JsonObtainerService.class);
+    public JsonObtainerService(String url){
+        this.url = url;
     }
     public String getJsonFromURLAsString(){
         try {
-            httpConnector = new HTTPConnectorService();
-            inputStream = new BufferedInputStream( httpConnector.obtainConnection().getInputStream());
+            HTTPConnectorService  httpConnector = new HTTPConnectorService(url);
+            InputStream inputStream = new BufferedInputStream( httpConnector.obtainConnection().getInputStream());
             rawJson = new String(inputStream.readAllBytes());
             logger.info("obtaining json from server" );
 
         } catch (IOException e) {
             logger.error("error occurred while obtaining json" + e);
-            e.printStackTrace();
         }
         return rawJson;
     }

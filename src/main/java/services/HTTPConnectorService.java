@@ -8,18 +8,16 @@ import java.net.URL;
 
 
 public class HTTPConnectorService {
-
-    private static final String URL_ALL_POSTS = "https://jsonplaceholder.typicode.com/posts";
-    private final static Logger logger = LoggerFactory.getLogger(HTTPConnectorService.class);
     private HttpsURLConnection httpsURLConnection;
-    private URL url;
     private int httpResponse;
-    public HTTPConnectorService(){
-
+    private  String urlAddress;
+    private final static Logger logger = LoggerFactory.getLogger(HTTPConnectorService.class);
+    public HTTPConnectorService(String urlAddress){
+        this.urlAddress = urlAddress;
     }
     public HttpsURLConnection obtainConnection() {
         try {
-            url = new URL(URL_ALL_POSTS);
+            URL url = new URL(urlAddress);
             httpsURLConnection = (HttpsURLConnection) url.openConnection();
             httpsURLConnection.setRequestMethod("GET");
             httpResponse = httpsURLConnection.getResponseCode();

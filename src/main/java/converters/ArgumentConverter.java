@@ -1,12 +1,18 @@
 package converters;
 
+
+
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 public class ArgumentConverter {
-    private ArgumentConverter(){}
-    private static Map<String, String> stringArguments = new HashMap<>();
-    public static Map<String,String> mapArguments(String[] args) {
+    public ArgumentConverter(){
+
+    }
+    private Map<String, String> stringArguments = new HashMap<>();
+    public Map<String,String> mapArguments(String[] args) {
 
         for (String argument:args) {
             String key = argument.substring(0,argument.indexOf("="));
@@ -16,13 +22,16 @@ public class ArgumentConverter {
         return stringArguments;
     }
 
-    public static String getDirectory() {
+    public String getDirectory() {
         return stringArguments.get("directory");
     }
 
-    public static String getUrl() {
+    public String getUrl() {
         return stringArguments.get("url");
     }
 
+    public String getType(){
+        return stringArguments.get("type");
+    }
 
 }

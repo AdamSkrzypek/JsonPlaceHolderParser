@@ -1,33 +1,35 @@
 package converters;
 
 import com.google.gson.*;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import services.HTTPConnectorService;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
+@AllArgsConstructor
+@Slf4j
 public abstract class Converter<T>{
-    Supplier<String> source;
+    private Function<HTTPConnectorService,JsonArray> source;
     private List<T> elementList = new ArrayList<>();
-
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private final static Logger logger = LoggerFactory.getLogger(Converter.class);
 
-
-    protected Converter(Supplier<String> source) {
+    protected Converter(Function<HTTPConnectorService,JsonArray> source) {
         this.source = source;
     }
-    public List<T> convertToCorrectObject(Supplier<String> source,Class<T>cls) {
-        JsonArray array = JsonParser.parseString(source.get()).getAsJsonArray();
-        for (JsonElement jsonElement : array) {
+    public List<T> convertToCorrectObject(Class<T>cls) {
+        for (JsonElement jsonElement : source.apply(new HTTPConnectorService())) {
             elementList.add(gson.fromJson(jsonElement, cls));
-            logger.info("converting json: " + jsonElement );
+            log.info("converting json: {}", jsonElement );
         }
         return elementList;
-
     }
-    public List<T> getPostList() {
+    public List<T> getElementList() {
         return elementList;
     }
 

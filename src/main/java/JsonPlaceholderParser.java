@@ -1,21 +1,19 @@
 
-import controler.JsonController;
-import controler.PostController;
+import configuration.JsonControllerStrategy;
 import converters.ArgumentConverter;
-import entities.Post;
+import exceptions.ObjectTypeException;
+
 
 public class JsonPlaceholderParser {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ObjectTypeException {
 
-        String url= "url=https://jsonplaceholder.typicode.com/posts";
-        String directory ="directory=C:\\OutputPosts\\";
-        String[]arguments = {url,directory};
-        ArgumentConverter.mapArguments(arguments);
-        JsonController<Post> postController = new PostController();
-        postController.fetchAllPosts();
-        postController.convertToObject();
-        postController.persistAllPosts();
 
+
+        ArgumentConverter argumentConverter = new ArgumentConverter();
+        argumentConverter.mapArguments(args);
+
+        JsonControllerStrategy strategy = new JsonControllerStrategy();
+        strategy.chooseStrategy(argumentConverter);
 
     }
 }

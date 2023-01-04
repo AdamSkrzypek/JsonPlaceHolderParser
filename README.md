@@ -20,5 +20,6 @@ Three arguments are required to run the program correctly:
  - type, e.g. type=posts
  
  To run the program, use the previously built JsonPlaceholderParser-jar-with-dependencies.jar in target destination of project.
- Program can be run by calling java -jar .\JsonPlaceholderParser-jar-with-dependencies.jar url=https://jsonplaceholder.typicode.com/posts directory=C:\OutputPosts\ type=posts
+ Program can be run by calling :
+ - java -jar .\JsonPlaceholderParser-jar-with-dependencies.jar url=https://jsonplaceholder.typicode.com/posts directory=C:\OutputPosts\ type=posts
 

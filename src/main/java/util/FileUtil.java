@@ -7,7 +7,6 @@ import java.io.File;
 public class FileUtil {
     private FileUtil() {
     }
-
     public static boolean createDirectory(String directory) {
         File file = new File(directory);
         if (file.mkdir()){

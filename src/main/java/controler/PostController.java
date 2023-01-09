@@ -1,13 +1,13 @@
 package controler;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import converters.ArgumentConverter;
 import converters.Converter;
 import converters.PostConverter;
 import entities.Post;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import services.HTTPConnectorService;
 import services.JsonObtainerService;
 import services.PostPersistenceService;
@@ -22,7 +22,7 @@ public class PostController implements JsonController<Post> {
     private ArgumentConverter argumentConverter;
     private Function<HTTPConnectorService,JsonArray> function;
     private Converter<Post>  postConverter;
-
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public PostController(ArgumentConverter argumentConverter) {
         this.argumentConverter = argumentConverter;
@@ -43,7 +43,7 @@ public class PostController implements JsonController<Post> {
     public List<Post> convertToObject() {
         log.info("sending request to convert raw JSON's to Post objects");
         postConverter = new PostConverter(function);
-        postConverter.convertToCorrectObject(Post.class);
+        postConverter.convertToCorrectObject(Post.class,gson);
         List<Post> postList =postConverter.getElementList();
         return postList.isEmpty() ? new ArrayList<>(): postList;
     }
@@ -53,8 +53,8 @@ public class PostController implements JsonController<Post> {
         String directory = argumentConverter.getDirectory();
         if (directory !=null ){
             log.info("sending request to PostPersistenceService");
-            PostPersistenceService postPersistenceService = new PostPersistenceService();
-            postPersistenceService.saveAll(postConverter.getElementList(),directory);
+            PostPersistenceService postPersistenceService = new PostPersistenceService(postConverter.getElementList(),directory,gson);
+            postPersistenceService.saveAll();
         }
     }
 

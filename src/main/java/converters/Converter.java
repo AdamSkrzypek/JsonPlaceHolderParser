@@ -17,12 +17,11 @@ import java.util.function.Function;
 public abstract class Converter<T>{
     private Function<HTTPConnectorService,JsonArray> source;
     private List<T> elementList = new ArrayList<>();
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     protected Converter(Function<HTTPConnectorService,JsonArray> source) {
         this.source = source;
     }
-    public List<T> convertToCorrectObject(Class<T>cls) {
+    public List<T> convertToCorrectObject(Class<T>cls,Gson gson) {
         for (JsonElement jsonElement : source.apply(new HTTPConnectorService())) {
             elementList.add(gson.fromJson(jsonElement, cls));
             log.info("converting json: {}", jsonElement );

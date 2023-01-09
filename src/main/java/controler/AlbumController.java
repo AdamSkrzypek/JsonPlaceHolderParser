@@ -1,5 +1,7 @@
 package controler;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import converters.AlbumConverter;
 import converters.ArgumentConverter;
@@ -9,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import services.AlbumPersistenceService;
 import services.HTTPConnectorService;
 import services.JsonObtainerService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -19,7 +20,7 @@ public class AlbumController implements JsonController<Album>{
     private ArgumentConverter argumentConverter;
     private Function<HTTPConnectorService,JsonArray> function;
     private Converter<Album> albumConverter;
-
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public AlbumController(ArgumentConverter argumentConverter) {
         this.argumentConverter=argumentConverter;
     }
@@ -39,7 +40,7 @@ public class AlbumController implements JsonController<Album>{
     public List<Album> convertToObject() {
         log.info("sending request to convert raw JSON's to Album objects");
         albumConverter = new AlbumConverter(function);
-        albumConverter.convertToCorrectObject(Album.class);
+        albumConverter.convertToCorrectObject(Album.class,gson);
         List<Album> albumList = albumConverter.getElementList();
         return albumList.isEmpty() ? new ArrayList<>(): albumList;
     }
@@ -49,8 +50,8 @@ public class AlbumController implements JsonController<Album>{
         String directory = argumentConverter.getDirectory();
         if (directory !=null){
             log.info("sending request to AlbumPersistenceService");
-            AlbumPersistenceService albumPersistenceService = new AlbumPersistenceService();
-            albumPersistenceService.saveAll(albumConverter.getElementList(),directory);
+            AlbumPersistenceService albumPersistenceService = new AlbumPersistenceService(albumConverter.getElementList(),directory,gson);
+            albumPersistenceService.saveAll();
         }
     }
 }

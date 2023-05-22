@@ -29,15 +29,11 @@ public class JsonControllerStrategy {
             if (strategy != null) {
                 log.info("Strategy " + type + " conversion");
                 JsonController<T> controller = createController(type, argumentConverter);
-                executeStrategy(strategy, controller);
+                strategy.execute(controller);
             } else {
                 throw new ObjectTypeException("Invalid object type provided");
             }
         }
-    }
-
-    private <T> void executeStrategy(ConversionStrategy<T> strategy, JsonController<T> controller) {
-        strategy.execute(controller);
     }
 
     private <T> JsonController<T> createController(String type, ArgumentConverter argumentConverter) {

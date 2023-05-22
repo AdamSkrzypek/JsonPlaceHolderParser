@@ -8,6 +8,7 @@ import converters.ArgumentConverter;
 import converters.Converter;
 import entities.Album;
 import lombok.extern.slf4j.Slf4j;
+import services.AbstractPersistenceService;
 import services.AlbumPersistenceService;
 import services.HTTPConnectorService;
 import services.JsonObtainerService;
@@ -50,7 +51,7 @@ public class AlbumController implements JsonController<Album>{
         String directory = argumentConverter.getDirectory();
         if (directory !=null){
             log.info("sending request to AlbumPersistenceService");
-            AlbumPersistenceService albumPersistenceService = new AlbumPersistenceService(albumConverter.getElementList(),directory,gson);
+           AbstractPersistenceService<Album> albumPersistenceService = new AlbumPersistenceService(albumConverter.getElementList(),directory,gson);
             albumPersistenceService.saveAll();
         }
     }

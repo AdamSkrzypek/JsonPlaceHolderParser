@@ -8,6 +8,7 @@ import converters.Converter;
 import converters.PostConverter;
 import entities.Post;
 import lombok.extern.slf4j.Slf4j;
+import services.AbstractPersistenceService;
 import services.HTTPConnectorService;
 import services.JsonObtainerService;
 import services.PostPersistenceService;
@@ -53,8 +54,8 @@ public class PostController implements JsonController<Post> {
         String directory = argumentConverter.getDirectory();
         if (directory !=null ){
             log.info("sending request to PostPersistenceService");
-            PostPersistenceService postPersistenceService = new PostPersistenceService(postConverter.getElementList(),directory,gson);
-            postPersistenceService.saveAll();
+            AbstractPersistenceService<Post> persistenceService = new PostPersistenceService(postConverter.getElementList(),directory,gson);
+            persistenceService.saveAll();
         }
     }
 

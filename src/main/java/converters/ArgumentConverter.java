@@ -1,13 +1,6 @@
 package converters;
 
-
-
-import com.sun.jdi.ObjectCollectedException;
-import exceptions.ObjectTypeException;
 import lombok.NoArgsConstructor;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -15,10 +8,13 @@ import java.util.Optional;
 
 @NoArgsConstructor
 public class ArgumentConverter {
-    private final String defaultDirectory ="C:\\Output\\";
+    private static final  String defaultDirectory ="C:\\Output\\";
     private Map<String, String> stringArguments = new HashMap<>();
     public Map<String,String> mapArguments(String[] args) {
       for (String argument:args) {
+          if (!argument.contains("=")) {
+              throw new IllegalArgumentException("Invalid argument format: " + argument);
+          }
             String key = argument.substring(0,argument.indexOf("="));
             String value = argument.substring(argument.indexOf("=")+1);
             stringArguments.put(key,value);

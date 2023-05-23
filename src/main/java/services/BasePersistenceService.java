@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.util.List;
 
 @Slf4j
-public  abstract class AbstractPersistenceService<T extends Data> implements PersistenceService<T>{
+public  abstract class BasePersistenceService<T extends Data> implements PersistenceService<T>{
 
     private List<T> elements;
     private String directory;
     private Gson gson;
 
-    protected AbstractPersistenceService(List<T> elements, String directory, Gson gson) {
+    protected BasePersistenceService(List<T> elements, String directory, Gson gson) {
         this.elements = elements;
         this.directory = directory;
         this.gson = gson;
@@ -30,10 +30,10 @@ public  abstract class AbstractPersistenceService<T extends Data> implements Per
         try {
             FileWriter fileWriter =new FileWriter(directory);
             gson.toJson(data,fileWriter);
-            log.info("persisting album " + data.getId() + " to directory: " + directory);
+            log.info("persisting object " + data.getId() + " to directory: " + directory);
             fileWriter.close();
         } catch (IOException e) {
-            log.error("error while saving album" + e);
+            log.error("error while saving object{}" , e);
         }
     }
 }

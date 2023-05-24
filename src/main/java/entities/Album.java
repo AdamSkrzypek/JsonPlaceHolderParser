@@ -5,6 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Album extends Data{
-
+public class Album {
+    private Long id;
+    private Long userId;
+    private String title;
 }

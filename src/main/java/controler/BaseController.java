@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import converters.ArgumentConverter;
 import converters.Converter;
-import entities.Data;
 import lombok.extern.slf4j.Slf4j;
 import services.BasePersistenceService;
 import services.HTTPConnectorService;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @Slf4j
-public abstract class BaseController<T extends Data> implements JsonController<T>{
+public abstract class BaseController<T> implements JsonController<T>{
 
     private ArgumentConverter argumentConverter;
     private Function<HTTPConnectorService,JsonArray> function;

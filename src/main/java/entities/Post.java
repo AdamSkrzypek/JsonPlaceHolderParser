@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post extends Data{
+public class Post{
+   private Long id;
+   private Long userId;
+   private String title;
    private String body;
 
 }

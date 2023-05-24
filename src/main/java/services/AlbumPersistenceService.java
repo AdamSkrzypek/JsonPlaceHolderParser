@@ -8,6 +8,11 @@ import java.util.List;
 @Slf4j
 public class AlbumPersistenceService extends BasePersistenceService<Album> {
 
+    @Override
+    protected Long getId(Album entity) {
+        return entity.getId();
+    }
+
     public AlbumPersistenceService(List<Album> elements, String directory, Gson gson) {
         super(elements, directory, gson);
     }
